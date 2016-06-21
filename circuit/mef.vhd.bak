@@ -1,0 +1,43 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity mef is
+	port(
+		clk : in std_logic;
+		temp : in std_logic;
+		S3 : in std_logic;
+		S7 : in std_logic;
+		clc : out std_logic;
+		z : out std_logic
+	);
+end mef;
+
+architecture arch of mef is
+
+	component flip_flop_d
+		port(
+			clk	: in 	std_logic;
+			rst : in 	std_logic;
+			pre : in 	std_logic;
+			ce  : in 	std_logic;
+			d 	: in 	std_logic;
+			q 	: out	std_logic
+		);
+	end component;
+
+signal e0, e1 : std_logic;
+signal d0, d1 : std_logic;
+signal o0, o1 : std_logic;
+
+begin
+	e0 <= o0;
+	e1 <= o1;
+	d0 <= temp or (s3 and o1) or ((not s3) and (not o1) and o0) or ((not s3) and (not s7) and o0);
+	d1 <= (s3 and o1 and o0) or (temp and s3 and o0) or ((not s7) and o1);
+	clc <= (not o0) or (s3 and (not o1)) or (s7 and o1);
+	z <= o1;
+	
+	ff0 : flip_flop_d port map(clk, '0', '0', '1', d0, o0);
+	ff1 : flip_flop_d port map(clk, '0', '0', '1', d1, o1); 
+	
+	end arch;

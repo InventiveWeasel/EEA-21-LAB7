@@ -1,0 +1,111 @@
+|circuit
+temp => mef:mach.temp
+clk => div_clock:div.clk_in
+z <= mef:mach.z
+e[0] <= mef:mach.outaux[0]
+e[1] <= mef:mach.outaux[1]
+clcaux <= mef:mach.clc
+countaux[0] <= counter:count.q0
+countaux[1] <= counter:count.q1
+countaux[2] <= counter:count.q2
+
+
+|circuit|div_clock:div
+clk_in => clk.CLK
+clk_in => count[0].CLK
+clk_in => count[1].CLK
+clk_in => count[2].CLK
+clk_out <= clk.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|circuit|mef:mach
+clk => flip_flop_d:ff0.clk
+clk => flip_flop_d:ff1.clk
+temp => d0.IN1
+temp => d1.IN0
+S3 => d0.IN1
+S3 => d1.IN1
+S3 => d1.IN1
+S3 => clc.IN1
+S3 => d0.IN1
+S3 => d0.IN0
+S7 => clc.IN1
+S7 => d0.IN1
+S7 => d1.IN1
+clc <= clc.DB_MAX_OUTPUT_PORT_TYPE
+z <= flip_flop_d:ff1.q
+outaux[0] <= flip_flop_d:ff0.q
+outaux[1] <= flip_flop_d:ff1.q
+
+
+|circuit|mef:mach|flip_flop_d:ff0
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|circuit|mef:mach|flip_flop_d:ff1
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|circuit|comb:com
+q0 => s3.IN1
+q0 => s7.IN1
+q1 => s3.IN0
+q1 => s7.IN0
+q2 => s7.IN1
+q2 => s3.IN1
+s3 <= s3.DB_MAX_OUTPUT_PORT_TYPE
+s7 <= s7.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|circuit|counter:count
+clc => d0.IN1
+clc => d1.IN1
+clc => d1.IN1
+clc => d2.IN1
+clc => d2.IN1
+clc => d2.IN1
+clk => flip_flop_d:ff0.clk
+clk => flip_flop_d:ff1.clk
+clk => flip_flop_d:ff2.clk
+q0 <= flip_flop_d:ff0.q
+q1 <= flip_flop_d:ff1.q
+q2 <= flip_flop_d:ff2.q
+
+
+|circuit|counter:count|flip_flop_d:ff0
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|circuit|counter:count|flip_flop_d:ff1
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|circuit|counter:count|flip_flop_d:ff2
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+

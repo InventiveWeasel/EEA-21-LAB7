@@ -1,0 +1,67 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity circuit is
+	port(
+		temp : in std_logic;
+		clk : in std_logic;
+		z : out std_logic;
+		e : out std_logic_vector(1 downto 0);
+		clcaux : out std_logic;
+		countaux : out std_logic_vector(2 downto 0)
+	);
+end circuit;
+
+architecture arch of circuit is
+
+component mef is
+	port(
+		clk : in std_logic;
+		temp : in std_logic;
+		S3 : in std_logic;
+		S7 : in std_logic;
+		clc : out std_logic;
+		z : out std_logic;
+		outaux : out std_logic_vector(1 downto 0)
+	);
+end component;
+
+component counter is
+	port(
+		clc : in std_logic;
+		clk : in std_logic;
+		q0 : out std_logic;
+		q1 : out std_logic;
+		q2 : out std_logic
+	);
+end component;
+
+component div_clock is
+	port(
+			clk_in 	: in 	std_logic;
+			clk_out	: out	std_logic
+		);
+end component;
+
+component comb is
+	port(
+		q0 : in std_logic;
+		q1 : in std_logic;
+		q2 : in std_logic;
+		s3 : out std_logic;
+		s7 : out std_logic
+	);
+end component;
+
+signal s3, s7, clc, q0, q1, q2, clkdiv: std_logic;
+
+begin
+	clcaux <= clc;
+	countaux(0) <= q0;
+	countaux(1) <= q1;
+	countaux(2) <= q2;
+	div : div_clock port map(clk, clkdiv);
+	mach : mef port map(clkdiv, temp, s3, s7, clc, z, e);
+	com : comb port map(q0, q1, q2, s3, s7);
+	count : counter port map(clc, clkdiv, q0, q1, q2);
+end arch;

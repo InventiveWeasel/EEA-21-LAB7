@@ -1,0 +1,48 @@
+|counter
+clc => d0.IN1
+clc => d1.IN1
+clc => d1.IN1
+clc => d2.IN1
+clc => d2.IN1
+clc => d2.IN1
+clk => div_clock:div.clk_in
+q0 <= flip_flop_d:ff0.q
+q1 <= flip_flop_d:ff1.q
+q2 <= flip_flop_d:ff2.q
+
+
+|counter|div_clock:div
+clk_in => clk.CLK
+clk_in => count[0].CLK
+clk_in => count[1].CLK
+clk_in => count[2].CLK
+clk_out <= clk.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|counter|flip_flop_d:ff0
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|counter|flip_flop_d:ff1
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|counter|flip_flop_d:ff2
+clk => q~reg0.CLK
+rst => q.OUTPUTSELECT
+pre => q.OUTPUTSELECT
+ce => q.OUTPUTSELECT
+d => q.DATAB
+q <= q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
